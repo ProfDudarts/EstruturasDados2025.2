@@ -1,0 +1,13 @@
+{
+  "name": "pilha-PHP",
+  "description": "Um projeto que implementa uma estrutura de dados de pilha em PHP.",
+  "type": "project",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "src\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
