@@ -4,3 +4,4 @@ Version:
         -00.1.0.0.0.0.0.002 (Link Test)
         -00.1.0.0.0.0.0.003 (The Composer)
         -00.1.0.0.0.0.0.003.1 (The Re-composer)
+        -00.1.0.0.0.0.0.003.2 (The True Composer)
