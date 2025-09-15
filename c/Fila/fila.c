@@ -15,6 +15,7 @@ Fila* criar_fila() {
 void enfileirar(Fila* fila, int dado) {
     NoFila* novo_no = (NoFila*)malloc(sizeof(NoFila));
     if (novo_no == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed\n");
         exit(1);
     }
     novo_no->dado = dado;
