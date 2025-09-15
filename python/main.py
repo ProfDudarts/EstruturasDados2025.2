@@ -1,18 +1,19 @@
 from src.No.no import No
 from src.Pilha.pilha import Pilha
+from src.Fila.fila import Fila
 
-pilha = Pilha()
-pilha.inserir(No("Dudarts"))
-pilha.inserir(No("Lucas Eduardo"))
-pilha.inserir(No("Pedro Eduardo"))
+fila = Fila()
+fila.inserir(No("Dudarts"))
+fila.inserir(No("Lucas Eduardo"))
+fila.inserir(No("Pedro Eduardo"))
 
-pilha.listar()
-removido = pilha.remover()
+fila.listar()
+removido = fila.remover()
 print()
 removido.imprimir()
 print()
-pilha.listar()
+fila.listar()
 print()
 
-pilha.inserir(No("Dalila Eduardo"))
-pilha.listar()
+fila.inserir(No("Dalila Eduardo"))
+fila.listar()
