@@ -14,6 +14,7 @@ Pilha* criar_pilha() {
 void empilhar(Pilha* pilha, int dado) {
     NoPilha* novo_no = (NoPilha*)malloc(sizeof(NoPilha));
     if (novo_no == NULL) {
+        fprintf(stderr, "Error: Memory allocation failed\n");
         exit(1);
     }
     novo_no->dado = dado;
