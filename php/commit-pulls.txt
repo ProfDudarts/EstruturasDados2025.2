@@ -7,3 +7,4 @@ Version:
         -00.1.0.0.0.0.0.003.2 (The True Composer)
         -00.1.0.0.0.0.0.004 (Pilha-php was created)
         -00.1.0.0.0.0.0.005 (Fix things up)
+        -00.1.0.0.0.0.0.006 (More Things to Fix)
