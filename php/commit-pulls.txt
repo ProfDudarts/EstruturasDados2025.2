@@ -8,3 +8,4 @@ Version:
         -00.1.0.0.0.0.0.004 (Pilha-php was created)
         -00.1.0.0.0.0.0.005 (Fix things up)
         -00.1.0.0.0.0.0.006 (More Things to Fix)
+        -00.1.0.0.0.0.0.007 (Knot analisys)
