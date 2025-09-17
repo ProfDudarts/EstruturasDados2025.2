@@ -1,6 +1,9 @@
 
+from src.Models.cliente import Cliente
+
+
 class No():
-    def __init__(self, valor):
+    def __init__(self, valor: Cliente):
         self.valor = valor
         self.proximo: No = None
 
@@ -8,7 +11,7 @@ class No():
         return str(self.valor)
     
     def imprimir(self):
-        print(f"Ola, {self.valor}")
+        self.valor.exibir()
 
     def temProximo(self):
         return self.proximo != None
