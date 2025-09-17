@@ -39,11 +39,23 @@ class Fila():
         self.base = atual.proximo
         return atual
 
-        # while True:
-        #     if not atual.proximo.temProximo():
-        #         ultimo = atual.proximo
-        #         atual.proximo = None
-        #         self.tamanho -= 1
-        #         return ultimo 
-        #     else:
-        #         atual = atual.proximo
+    def obterPosicao(self, id: int) -> int:
+        try:
+            posicao = self._posicao_do_no(self.base, id)
+            if not posicao:
+                posicao = 0
+            
+            return posicao
+        except:
+            return 0
+    
+    def _posicao_do_no(self, no: No, id: int) -> int:
+        try:
+            if no.valor.id == id:
+                return 1
+            else:
+                if no.temProximo():            
+                    return 1 + self._posicao_do_no(no.proximo, id)
+        except:
+            raise "Id não encontrado"
+
