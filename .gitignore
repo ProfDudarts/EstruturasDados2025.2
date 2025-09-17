@@ -1,0 +1,57 @@
+# Arquivos de Sistema Operacional
+#################################
+Thumbs.db
+.DS_Store
+
+
+# Arquivos de Build e Compilação
+################################
+*.o
+*.obj
+*.o.d
+*.a
+*.lib
+*.so
+*.dll
+*.exe
+*.out
+*.app
+programa
+
+
+# Arquivos de Depuração
+#####################
+*.pdb
+*.gdb
+*.prof
+*.ilk
+
+
+# Arquivos gerados por sistemas de Build (como CMake)
+######################################################
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+
+# Configurações de IDEs e Editores de Código
+###########################################
+.vs/
+.vscode/
+*.suo
+*.user
+*.[Ss]olution[Oo]ptions
+*.vcxproj.filters
+*.vcxproj.user
+*.sln.docstates
+.idea/
+.cproject
+.project
+.settings/
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+.nb-gradle/
