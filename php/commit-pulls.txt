@@ -12,3 +12,4 @@ Version:
         -[ • Gustavo   ] 00.1.0.0.0.0.0.007    - (Knot analisys)
         -[ • Luís      ] 00.1.0.0.0.0.0.008    - (Why not better?)
         -[ • Luís      ] 00.1.0.0.0.0.0.008.1  - (Better again)
+        -[ • Gustavo   ] 00.1.0.0.0.0.0.009    - (Namespaces creation)

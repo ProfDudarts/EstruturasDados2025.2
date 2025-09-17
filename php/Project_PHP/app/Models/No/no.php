@@ -1,4 +1,6 @@
 <?php
+namespace Estruturas;
+
 class No {
     public $valor;
     public $proximo;
@@ -12,4 +14,3 @@ class No {
         echo $this->valor . PHP_EOL;
     }
 }
-

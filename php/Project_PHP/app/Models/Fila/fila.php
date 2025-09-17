@@ -1,4 +1,6 @@
 <?php
+namespace Estruturas;
+
 class Fila{
     private $itens = [];
 

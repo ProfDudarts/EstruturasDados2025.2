@@ -1,4 +1,5 @@
 <?php
+namespace Estruturas;
 
 class Pilha {
     private $itens = [];
