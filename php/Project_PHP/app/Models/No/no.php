@@ -2,15 +2,15 @@
 namespace Estruturas;
 
 class No {
-    public $valor;
-    public $proximo;
+    public mixed $valor;
+    public ?self $proximo;
 
-    public function __construct($valor) {
+    public function __construct(mixed $valor) {
         $this->valor = $valor;
         $this->proximo = null;
     }
 
-    public function imprimir() {
+    public function imprimir() : void {
         echo $this->valor . PHP_EOL;
     }
 }

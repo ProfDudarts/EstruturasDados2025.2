@@ -13,3 +13,4 @@ Version:
         -[ • Luís      ] 00.1.0.0.0.0.0.008    - (Why not better?)
         -[ • Luís      ] 00.1.0.0.0.0.0.008.1  - (Better again)
         -[ • Gustavo   ] 00.1.0.0.0.0.0.009    - (Namespaces creation)
+        -[ • Gustavo   ] 00.1.0.0.0.0.0.010    - (Structural rework)
