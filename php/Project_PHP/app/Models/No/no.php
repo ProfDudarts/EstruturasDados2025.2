@@ -2,15 +2,31 @@
 namespace Estruturas;
 
 class No {
-    public mixed $valor;
-    public ?self $proximo;
+    private mixed $valor;
+    private ?self $proximo;
 
     public function __construct(mixed $valor) {
         $this->valor = $valor;
         $this->proximo = null;
     }
 
+    public function getValor() : mixed {
+        return $this->valor;
+    }
+
+    public function getProximo() : ?self {
+        return $this->proximo;
+    }
+
+    public function setProximo(?self $no) : void {
+        $this->proximo = $no;
+    }
+
     public function imprimir() : void {
-        echo $this->valor . PHP_EOL;
+        if (is_scalar($this->valor)) {
+            echo $this->valor . PHP_EOL;
+        } else {
+            echo "[Objeto No]" . PHP_EOL;
+        }
     }
 }
