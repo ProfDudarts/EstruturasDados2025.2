@@ -1,4 +1,4 @@
-class Pilha<T> {
+public class Pilha<T> {
     private java.util.LinkedList<T> elementos = new java.util.LinkedList<>();
 
     // adiciona no topo
