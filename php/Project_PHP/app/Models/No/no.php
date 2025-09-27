@@ -20,6 +20,7 @@ class No {
 
     public function setProximo(?self $no) : void {
         $this->proximo = $no;
+        return $this;
     }
 
     public function imprimir() : void {

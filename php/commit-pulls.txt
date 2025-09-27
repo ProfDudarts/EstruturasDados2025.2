@@ -17,3 +17,4 @@ Version:
         -[ • Gustavo   ] 00.1.0.0.0.0.0.011    - (General readme)
         -[ • Gustavo   ] 00.1.0.0.0.0.0.011.1  - (General readme rework)
         -[ • Gustavo   ] 00.1.0.0.0.0.0.012    - (LDE created)
+        -[ • Philipe   ] 00.1.0.0.0.0.0.013    - (LE created)
