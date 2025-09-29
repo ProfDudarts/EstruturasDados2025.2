@@ -1,4 +1,5 @@
-class Fila<T> {
+
+public class Fila<T> {
     private java.util.LinkedList<T> elementos = new java.util.LinkedList<>();
 
     // adiciona no final
