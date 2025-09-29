@@ -1,6 +1,8 @@
 import { Fila } from './Models/fila.js';
-import {No} from './Models/no.js';
 import {Pilha} from './Models/pilha.js';
+import { ListaEncadeada } from "./Models/ListaEncadeada"
+import { ListaDuplamenteEncadeada } from "./Models/ListaDuplamenteEncadeada"
+
 
 const minhaFila = new Fila<number>();
 
@@ -42,3 +44,27 @@ console.log('Apagando o topo:', minhaPilha.apagar());
 console.log('Novo topo:', minhaPilha.topo_valor());
 
 console.log('A pilha está vazia?', minhaPilha.empty());
+
+
+function main() {
+  console.log("===== Lista Encadeada =====")
+  const lista = new ListaEncadeada<number>()
+  lista.adicionar(10)
+  lista.adicionar(20)
+  lista.adicionarInicio(5)
+  lista.imprimir()
+  lista.remover(20)
+  lista.imprimir()
+
+  console.log("\n===== Lista Duplamente Encadeada =====")
+  const listaDupla = new ListaDuplamenteEncadeada<string>()
+  listaDupla.adicionar("A")
+  listaDupla.adicionar("B")
+  listaDupla.adicionarInicio("Início")
+  listaDupla.imprimirFrente()
+  listaDupla.imprimirTras()
+  listaDupla.remover("B")
+  listaDupla.imprimirFrente()
+}
+
+main()
