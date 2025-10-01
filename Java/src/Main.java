@@ -44,7 +44,6 @@ public class Main {
         listaDupla.remover(2);
         listaDupla.listarFrente();
         listaDupla.listarTras();
-        
     }
 }
 
