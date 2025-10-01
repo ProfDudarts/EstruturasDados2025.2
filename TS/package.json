@@ -7,9 +7,12 @@
     "test": "test"
   },
   "scripts": {
-   "start": "tsc && node dist/main.js"
+    "start": "tsc && node dist/main.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.9.2"
+  }
 }
