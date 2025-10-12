@@ -45,9 +45,21 @@ public class Main {
         listaDupla.listarFrente();
         listaDupla.listarTras();
     }
+
+    ArvoreBinaria arvore = new ArvoreBinaria();
+
+        arvore.inserir(50);
+        arvore.inserir(30);
+        arvore.inserir(70);
+        arvore.inserir(20);
+        arvore.inserir(40);
+        arvore.inserir(60);
+        arvore.inserir(80);
+
+        System.out.print("Percorrendo em ordem: ");
+        arvore.emOrdem();
+        System.out.println();
+
+        System.out.println("Buscar 40: " + arvore.buscar(40)); // true
+        System.out.println("Buscar 90: " + arvore.buscar(90)); // false
 }
-
-
-
-
-
