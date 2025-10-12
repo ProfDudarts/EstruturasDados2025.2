@@ -1,8 +1,7 @@
 import { Fila } from './Models/fila.js';
+import {No} from './Models/no.js';
 import {Pilha} from './Models/pilha.js';
-import { ListaEncadeada } from "./Models/ListaEncadeada"
-import { ListaDuplamenteEncadeada } from "./Models/ListaDuplamenteEncadeada"
-
+import { ArvoreBinaria } from './Models/ArvoreBinaria.js';
 
 const minhaFila = new Fila<number>();
 
@@ -45,26 +44,22 @@ console.log('Novo topo:', minhaPilha.topo_valor());
 
 console.log('A pilha está vazia?', minhaPilha.empty());
 
+///////////////////////////////////////////////////////
+// Árvore Binária de Busca
+///////////////////////////////////////////////////////
 
-function main() {
-  console.log("===== Lista Encadeada =====")
-  const lista = new ListaEncadeada<number>()
-  lista.adicionar(10)
-  lista.adicionar(20)
-  lista.adicionarInicio(5)
-  lista.imprimir()
-  lista.remover(20)
-  lista.imprimir()
+const minhaArvore = new ArvoreBinaria<number>();
+console.log('A árvore está vazia?', minhaArvore.vazio());
 
-  console.log("\n===== Lista Duplamente Encadeada =====")
-  const listaDupla = new ListaDuplamenteEncadeada<string>()
-  listaDupla.adicionar("A")
-  listaDupla.adicionar("B")
-  listaDupla.adicionarInicio("Início")
-  listaDupla.imprimirFrente()
-  listaDupla.imprimirTras()
-  listaDupla.remover("B")
-  listaDupla.imprimirFrente()
-}
+console.log('Inserindo os elementos 20, 10 e 30...');
+minhaArvore.inserir(20);
+minhaArvore.inserir(10);
+minhaArvore.inserir(30);
 
-main()
+console.log('--- Conteúdo da árvore (In-Order) ---');
+console.log(minhaArvore.listarInOrder());
+
+console.log('Removendo 20:', minhaArvore.remover(20));
+console.log('Novo conteúdo:', minhaArvore.listarInOrder());
+
+console.log('Tentando remover 50 (não existe):', minhaArvore.remover(50));
