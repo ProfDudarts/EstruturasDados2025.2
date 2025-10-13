@@ -24,7 +24,6 @@ class No {
     // --Define qual será o próximo nó
     public function setProximo(?self $no) : void {
         $this->proximo = $no;
-        return $this; // ->Retorna a si mesmo para encadeamento opcional
     }
 
     // --Imprime o valor do nó
