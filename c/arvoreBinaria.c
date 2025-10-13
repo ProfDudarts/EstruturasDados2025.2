@@ -45,3 +45,36 @@ void inserir_iterativo(struct No** raiz, int valor) {
         pai->direita = novoNo;
     }
 }
+
+void emOrdem(struct No* raiz) {
+    if (raiz != NULL) {
+        emOrdem(raiz->esquerda);
+        printf("%d ", raiz->valor);
+        emOrdem(raiz->direita);
+    }
+}
+
+void liberarArvore(struct No* raiz) {
+    if (raiz != NULL) {
+        liberarArvore(raiz->esquerda);
+        liberarArvore(raiz->direita);
+        free(raiz);
+    }
+}
+int main() {
+    struct No* raiz = NULL;
+
+    printf("Inserindo valores com a função ITERATIVA...\n");
+    inserir_iterativo(&raiz, 50);
+    inserir_iterativo(&raiz, 30);
+    inserir_iterativo(&raiz, 70);
+    inserir_iterativo(&raiz, 20);
+    inserir_iterativo(&raiz, 40);
+
+    printf("Valores da árvore em ordem:\n");
+    emOrdem(raiz);
+    printf("\n");
+    
+    liberarArvore(raiz);
+    return 0;
+}
