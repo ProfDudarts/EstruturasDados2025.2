@@ -19,12 +19,10 @@ class ArvoreBinaria:
             pai.direito = valor
             return
         else:
-            self._inserir(pai.esquerdo, valor)
-            
-            if pai.esquerdo.esquerdo and pai.esquerdo.direito:
-                return self._inserir(pai.direito, valor)
-            else:
+            if valor.valor < pai.valor:
                 return self._inserir(pai.esquerdo, valor)
+            else:
+                return self._inserir(pai.direito, valor)
 
     def taCompleto(self, no: No) -> bool:
         return no.esquerdo and no.direito
@@ -38,5 +36,8 @@ class ArvoreBinaria:
             self._exibir(atual.esquerdo, nivel + 2, "E: ")
         if atual.direito:
             self._exibir(atual.direito, nivel + 2, "D: ")
+    
+    def altura(self,):
+        pass
 
 
