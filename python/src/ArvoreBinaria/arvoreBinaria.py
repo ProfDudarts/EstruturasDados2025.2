@@ -3,13 +3,13 @@ from src.No.node import No
 
 class ArvoreBinaria:
     def __init__(self):
-        self.root: No = None
+        self.raiz: No = None
     
     def inserir(self, valor: No) -> None:
-        if not self.root:
-            self.root = valor
+        if not self.raiz:
+            self.raiz = valor
         else:
-            self._inserir(self.root, valor)
+            self._inserir(self.raiz, valor)
     
     def _inserir(self, pai: No, valor: No) -> None:
         if not pai.esquerdo:
@@ -19,7 +19,7 @@ class ArvoreBinaria:
             pai.direito = valor
             return
         else:
-            if valor.valor < pai.valor:
+            if self._altura(pai.esquerdo) <= self._altura(pai.direito):
                 return self._inserir(pai.esquerdo, valor)
             else:
                 return self._inserir(pai.direito, valor)
@@ -28,7 +28,7 @@ class ArvoreBinaria:
         return no.esquerdo and no.direito
     
     def exibir(self):
-        self._exibir(self.root, 0, "R: ")
+        self._exibir(self.raiz, 0, "R: ")
 
     def _exibir(self, atual: No, nivel: int, prefixo: str) -> None:
         print(" " * nivel, prefixo, atual.valor)
@@ -37,7 +37,14 @@ class ArvoreBinaria:
         if atual.direito:
             self._exibir(atual.direito, nivel + 2, "D: ")
     
-    def altura(self,):
-        pass
+    def altura(self):
+        return self._altura(self.raiz)
+
+    def _altura(self, no: No):
+        if no is None:
+            return 0
+        else: 
+            return 1 + max(self._altura(no.esquerdo), self._altura(no.direito))
+        
 
 
