@@ -1,0 +1,7 @@
+#Compiling directories
+bin/
+obj/
+
+#VS-Code Config directories
+.vscode/
+.vs/
