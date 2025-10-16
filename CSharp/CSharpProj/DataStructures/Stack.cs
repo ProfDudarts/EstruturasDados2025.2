@@ -1,7 +1,7 @@
-namespace DataStructures;
-
+using DataStructures.Nodes;
 using System.Text;
-using DataStructures.Knots;
+
+namespace DataStructures;
 
 public class Stack<T> : IEnumerable<T>
 {
@@ -128,7 +128,7 @@ public class Stack<T> : IEnumerable<T>
         var knot = TopKnot;
         while (knot is not null)
         {
-            yield return knot.Value!;
+            yield return knot.Value;
             knot = knot.NextKnot;
         }
     }

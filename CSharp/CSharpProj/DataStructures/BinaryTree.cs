@@ -1,7 +1,6 @@
+using DataStructures.Nodes;
 using System.ComponentModel;
 using System.Text;
-using DataStructures.Knots;
-
 
 namespace DataStructures;
 
@@ -10,17 +9,14 @@ public class BinaryTree<T> : IEnumerable<T>
     private Node<T>? Root;
     private int Count;
 
+    public bool IsEmpty { get { return (Root is null) ? true : false; } }
+
     public BinaryTree() { Clear(); }
 
     public void Clear()
     {
         Root = null;
         Count = 0;
-    }
-
-    public bool IsEmpty()
-    {
-        return (Root is null) ? true : false;
     }
 
     public int GetHeight()

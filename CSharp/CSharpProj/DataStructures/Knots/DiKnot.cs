@@ -1,30 +1,36 @@
-namespace DataStructures.Knots;
+namespace DataStructures.Nodes;
 
 public class DiKnot<T>
 {
-    private DiKnot<T>? _nextKnot = null;
-    private DiKnot<T>? _previousKnot = null;
+    public DiKnot<T>? NextKnot = null;
+    public DiKnot<T>? PreviousKnot = null;
 
-    private T _value;
+    public T Value;
 
-    public DiKnot<T>? NextKnot { get { return _nextKnot; } set { _nextKnot = value; } }
-    public DiKnot<T>? PreviousKnot { get { return _previousKnot; } set { _previousKnot = value; } }
-    public T Value { get { return _value; } set { _value = value; } }
-
-    public bool HasNext { get { return _nextKnot is DiKnot<T>; } }
+    public bool HasNext { get { return NextKnot is DiKnot<T>; } }
+    public bool HasPrevious { get { return PreviousKnot is DiKnot<T>; } }
 
     public DiKnot(T value)
     {
-        _value = value;
-        _nextKnot = null;
-        _previousKnot = null;
+        Value = value;
     }
 
-    public DiKnot(T value, DiKnot<T> nextKnot, DiKnot<T> preKnot)
+    public DiKnot(T value, DiKnot<T> previous)
     {
-        _value = value;
-        _nextKnot = nextKnot;
-        _previousKnot = preKnot;
+        Value = value;
+        PreviousKnot = previous;
     }
-  
+
+    public DiKnot(T value, DiKnot<T> previous, DiKnot<T> next)
+    {
+        Value = value;
+        PreviousKnot = previous;
+        NextKnot = next;
+    }
+
+    public override string ToString()
+    {
+        return Value?.ToString() ?? string.Empty;
+    }
+
 }

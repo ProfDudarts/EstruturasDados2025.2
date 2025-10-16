@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using DataStructures;
-using DataStructures.Knots;
 
 public class Program
 {
@@ -8,10 +7,7 @@ public class Program
     {
         Console.Clear();
 
-        BinaryTree<int> tree = [];
-
-        Console.WriteLine(tree.GetHeight());
-
+        
     }
 
 }

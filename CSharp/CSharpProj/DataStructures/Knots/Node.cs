@@ -1,4 +1,4 @@
-namespace DataStructures.Knots;
+namespace DataStructures.Nodes;
 
 public class Node<T>
 {
@@ -12,23 +12,9 @@ public class Node<T>
         Value = value;
     }
 
-    public Node(T value, Node<T> left, Node<T> right)
-    {
-        Value = value;
-        Right = right;
-        Left = left;
-    }
-
     public override string ToString()
     {
-        if (Value is not null)
-        {
-            return Value.ToString()!;
-        }
-        else
-        {
-            return string.Empty;
-        }
-
+        return Value?.ToString() ?? string.Empty;
     }
+
 }

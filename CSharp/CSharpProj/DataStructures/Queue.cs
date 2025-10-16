@@ -1,7 +1,7 @@
-namespace DataStructures;
-
+using DataStructures.Nodes;
 using System.Text;
-using DataStructures.Knots;
+
+namespace DataStructures;
 
 public class Queue<T> : IEnumerable<T>
 {
