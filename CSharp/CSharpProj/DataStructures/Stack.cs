@@ -3,23 +3,30 @@ using System.Text;
 
 namespace DataStructures;
 
+/// <summary>
+/// Simple singly-linked stack implementation using Knot<T> as node storage.
+/// </summary>
 public class Stack<T> : IEnumerable<T>
 {
-    private int _count = 0;
-    private Knot<T>? TopKnot = null;
+    private int _count = 0; // number of elements 
+    private Knot<T>? TopKnot = null; // the top/root of the stack
 
-    public bool IsEmpty { get { return _count == 0; } }
+    public bool IsEmpty { get { return _count == 0; } }// return true if empty
 
-    public Stack() { Clear(); }
+    public Stack() { Clear(); } // constructor
 
-
+    /// <summary>
+    /// Clears the stack
+    /// </summary>
     public void Clear()
     {
         _count = 0;
         TopKnot = null;
     }
 
-
+    /// <summary>
+    /// Pushes the value<T> onto the top of the stack
+    /// </summary>
     public void Add(T value)
     {
         Knot<T> knotToAdd = new(value, TopKnot);
@@ -27,6 +34,10 @@ public class Stack<T> : IEnumerable<T>
         _count += 1;
     }
 
+    /// <summary>
+    /// Removes and returns the top value; throws if the stack is empty
+    /// </summary>
+    /// <exception cref="IndexOutOfRangeException"> if the stack is empty </exception>
     public T Pop()
     {
         if (IsEmpty)
@@ -40,10 +51,15 @@ public class Stack<T> : IEnumerable<T>
         return value;
     }
 
-
+    /// <summary>
+    /// Returns the number of elements in the stack
+    /// </summary>
     public int Count()
     { return _count; }
 
+    /// <summary>
+    /// Returns the number of elements in the stack that satisfy the given condition
+    /// </summary>
     public int Count(Func<T, bool> condition)
     {
         int count = 0;
@@ -55,6 +71,10 @@ public class Stack<T> : IEnumerable<T>
         return count;
     }
 
+    /// <summary>
+    /// Returns the top value without removing it; throws if the stack is empty
+    /// </summary>
+    /// <exception cref="InvalidOperationException"> If the stack is empty </exception>
     public T Peek()
     {
         if (TopKnot is not null)
@@ -63,6 +83,10 @@ public class Stack<T> : IEnumerable<T>
         { throw new InvalidOperationException("Can't peek at an empty stack"); }
     }
 
+    /// <summary>
+    /// Tries to return the top value without removing it; returns false if the stack is empty
+    /// </summary>
+    /// <param name="value"> When this method returns, contains the object at the top of the stack, if the stack is not empty; </param>
     public bool TryPeek(out T? value)
     {
         try
@@ -77,6 +101,10 @@ public class Stack<T> : IEnumerable<T>
         }
     }
 
+    /// <summary>
+    /// Returns the next value without removing it; throws if there is no next value
+    /// </summary>
+    /// <exception cref="InvalidOperationException"> If there is no next value </exception>
     public T CheckNextValue()
     {
         if (TopKnot is not null && TopKnot.HasNext)
@@ -85,6 +113,10 @@ public class Stack<T> : IEnumerable<T>
         { throw new InvalidOperationException("There's no value to check"); }
     }
 
+    /// <summary>
+    /// Tries to return the next value without removing it; returns false if there is no next value
+    /// </summary>
+    /// <param name="value">  When this method returns, contains the next object in the stack, if there is a next value; </param>
     public bool TryCheckNextValue(out T? value)
     {
         try
@@ -99,7 +131,9 @@ public class Stack<T> : IEnumerable<T>
         }
     }
 
-
+    /// <summary>
+    /// Returns the index of the first element that satisfies the given condition, or -1 if none do
+    /// </summary>
     public int GetIndex(Func<T, bool> condition)
     {
         int count = 0;
@@ -110,19 +144,18 @@ public class Stack<T> : IEnumerable<T>
         }
         return -1;
     }
+
+    /// <summary>
+    /// Returns the index of the first occurrence of the given value, or -1 if not found
+    /// </summary>
     public int GetIndex(T value)
     {
-        int count = 0;
-        foreach (T item in this)
-        {
-            if (EqualityComparer<T>.Default.Equals(item, value))
-            { return count; }
-            count++;
-        }
-        return -1;
+        return GetIndex(x => EqualityComparer<T>.Default.Equals(x, value));
     }
 
-
+    /// <summary>
+    /// Gives the class Enumerator functions
+    /// </summary>
     public IEnumerator<T> GetEnumerator()
     {
         var knot = TopKnot;
@@ -134,27 +167,18 @@ public class Stack<T> : IEnumerable<T>
     }
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
+    /// <summary>
+    /// Returns a string representation of the stack
+    /// </summary>
     public override string ToString()
     {
-        StringBuilder builder = new();
-
-        builder.Append('[');
-
+        string str = "[";
         foreach (T i in this)
         {
-            if (i is null)
-            {
-                builder.Append("");
-            }
-            else
-            {
-                builder.Append(i.ToString());
-            }
-            builder.Append(", ");
+            str += i?.ToString();
+            str += ", ";
         }
-        builder.Remove(builder.Length - 2, 2);
-        builder.Append(']');
-
-        return builder.ToString();
+        str += "]";
+        return str;
     }
 }
