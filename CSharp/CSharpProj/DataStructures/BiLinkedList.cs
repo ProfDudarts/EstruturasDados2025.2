@@ -5,7 +5,7 @@ using System.Text;
 namespace DataStructures;
 
 /// <summary>
-/// A simple singly linked list implementation.
+/// A simple doubly-linked list implementation.
 /// </summary>
 public class DiLinkedList<T> : IEnumerable<T>
 {
@@ -36,13 +36,13 @@ public class DiLinkedList<T> : IEnumerable<T>
     /// This is an alias for AddEnd(T value).
     /// </summary>
     /// <param name="value"> value to be added </param>
-    public void Add(T value) => Add_Tail(value);
+    public void Add(T value) => AddEnd(value);
 
     /// <summary>
     /// Add a T value at the end of the list
     /// </summary>
     /// <param name="value"> value to be added </param>
-    public void Add_Tail(T value)
+    public void AddEnd(T value)
     {
         var toAdd = new DiKnot<T>(value);
 
@@ -64,7 +64,7 @@ public class DiLinkedList<T> : IEnumerable<T>
     /// Add a T value at the Front of the list
     /// </summary>
     /// <param name="value"> value to be added </param>
-    public void Add_Head(T value)
+    public void AddFront(T value)
     {
         var toAdd = new DiKnot<T>(value);
 
@@ -89,78 +89,24 @@ public class DiLinkedList<T> : IEnumerable<T>
     /// <param name="value"> value to be added </param>
     /// <param name="index"> the index </param>
     /// <exception cref="IndexOutOfRangeException"> if index goes outside the list </exception>
-    public void Insert(T value, int index)
+    public void InsertAt(T value, int index, bool alt = false)
     {
-        if ((Length/2) < ((index < 0)? Length - index : index))
-        { Insert_Tail(value, index); }
+        var i = index < 0 ? Length + index : index;
+        if (i < 0 || i > Length)
+            throw new IndexOutOfRangeException();
+
+        if (i == 0)
+            { AddFront(value); return; }
+        if (i == Length)
+            { AddEnd(value); return; }
+
+        var toAdd = new DiKnot<T>(value);
+        DiKnot<T> target = GetNodeAt(i);
+
+        if (alt)
+            LinkAlt(toAdd, target);
         else
-        { InsertHead(value, index); } 
-    }
-
-    /// <summary>
-    /// insert a value at the chosen index, traversing from the Head
-    /// </summary>
-    /// <param name="value"> value to be added </param>
-    /// <param name="index"> the index </param>
-    /// <exception cref="IndexOutOfRangeException"> if index goes outside the list </exception>
-    public void InsertHead(T value, int index)
-    {
-        if (index < 0)
-            index = Length + index;
-
-        if (index < 0 || Length < index)
-            throw new IndexOutOfRangeException();
-
-        if (index == 0)
-            { Add_Head(value); return; }
-
-        if (index == Length)
-            { Add_Tail(value); return; }
-
-        var toAdd = new DiKnot<T>(value);
-
-        var current = Head!.NextKnot;
-        for (int i = 1; i < index; i++)
-            current = current!.NextKnot;
-
-        toAdd.NextKnot = current;
-        toAdd.PreviousKnot = current!.PreviousKnot;
-        current.PreviousKnot!.NextKnot = toAdd;
-        current.PreviousKnot = toAdd;
-        Length++;
-    }
-
-    /// <summary>
-    /// insert a value at the chosen index, traversing from the Tail
-    /// </summary>
-    /// <param name="value"> value to be added </param>
-    /// <param name="index"> the index </param>
-    /// <exception cref="IndexOutOfRangeException"> if index goes outside the list </exception>
-    public void Insert_Tail(T value, int index)
-    {
-        if (index < 0)
-            index = Length + index;
-
-        if (index < 0 || Length < index)
-            throw new IndexOutOfRangeException();
-
-        if (index == 0)
-            { Add_Head(value); return; }
-
-        if (index == Length)
-            { Add_Tail(value); return; }
-
-        var toAdd = new DiKnot<T>(value);
-
-        var current = Tail!.PreviousKnot;
-        for (int i = Length - 2; i > index; i--)
-            current = current!.PreviousKnot;
-
-        toAdd.PreviousKnot = current;
-        toAdd.NextKnot = current!.NextKnot;
-        current.NextKnot!.PreviousKnot = toAdd;
-        current.NextKnot = toAdd;
-        Length++;
+            Link(toAdd, target);
     }
     #endregion
 
@@ -279,6 +225,9 @@ public class DiLinkedList<T> : IEnumerable<T>
         return count;
     }
 
+    /// <summary>
+    /// Check if the list is empty
+    /// </summary>
     private bool _IsEmpty()
     {
         return Length == 0;
@@ -302,18 +251,12 @@ public class DiLinkedList<T> : IEnumerable<T>
     public int GetIndex(Func<T, bool> condition)
     {
         var current = Head;
-        var count = 0;
-        while (current is not null)
+        for (int index = 0; current is not null; index++)
         {
             if (condition(current.Value))
-            {
-                return count;
-            }
-            else
-            {
-                current = current.NextKnot;
-                count++;
-            }
+                return index;
+
+            current = current.NextKnot;
         }
         return -1;
     }
@@ -340,11 +283,11 @@ public class DiLinkedList<T> : IEnumerable<T>
     }
 
     /// <summary>
-    /// Get the node at a specific index, decides if it's better to traverse from Head or Tail
+    /// Get the node at a specific index, decides if it's better to traverse from Head or Tail. Uses a Raw index
     /// </summary>
     private DiKnot<T> GetNodeAt(int index)
     {
-        if ((Length / 2) > ((index < 0) ? Length - index : index))
+        if ((Length / 2) > ((index < 0) ? Length + index : index))
         { return GetNodeAt_Head(index); }
         else
         { return GetNodeAt_Tail(index); }
@@ -405,6 +348,9 @@ public class DiLinkedList<T> : IEnumerable<T>
 
     private IEnumerable<DiKnot<T>> Nodes() => Nodes_Head();
 
+    /// <summary>
+    /// Enumerate nodes from Head to Tail
+    /// </summary>
     private IEnumerable<DiKnot<T>> Nodes_Head()
     {
         var current = Head;
@@ -414,6 +360,10 @@ public class DiLinkedList<T> : IEnumerable<T>
             current = current.NextKnot;
         }
     }
+
+    /// <summary>
+    /// Enumerate nodes from Tail to Head
+    /// </summary>
     private IEnumerable<DiKnot<T>> Nodes_Tail()
     {
         var current = Tail;
@@ -422,6 +372,36 @@ public class DiLinkedList<T> : IEnumerable<T>
             yield return current;
             current = current.PreviousKnot;
         }
+    }
+
+    /// <summary>
+    /// Link a node before the target node
+    /// </summary>
+    private void Link(DiKnot<T> toAdd, DiKnot<T> target)
+    {
+        toAdd.NextKnot = target;
+        toAdd.PreviousKnot = target.PreviousKnot;
+        if (target.PreviousKnot is not null)
+            target.PreviousKnot.NextKnot = toAdd;
+        else
+            Head = toAdd;
+        target.PreviousKnot = toAdd;
+        Length++;
+    }
+
+    /// <summary>
+    /// Link a node after the target node
+    /// </summary>
+    private void LinkAlt(DiKnot<T> toAdd, DiKnot<T> target)
+    {
+        toAdd.PreviousKnot = target;
+        toAdd.NextKnot = target.NextKnot;
+        if (target.NextKnot is not null)
+            target.NextKnot.PreviousKnot = toAdd;
+        else
+            Tail = toAdd;
+        target.NextKnot = toAdd;
+        Length++;
     }
     #endregion
 
@@ -495,13 +475,17 @@ public class DiLinkedList<T> : IEnumerable<T>
     /// </summary>
     public override string ToString()
     {
-        string _base = "[";
-        foreach (T i in this)
+        var sb = new StringBuilder();
+        sb.Append('[');
+        bool first = true;
+        foreach (T item in this)
         {
-            _base += i?.ToString();
-            _base += ", ";
+            if (!first) sb.Append(", ");
+            sb.Append(item is null ? "null" : item.ToString());
+            first = false;
         }
-        return _base += "]";
+        sb.Append(']');
+        return sb.ToString();
     }
     #endregion
 }
