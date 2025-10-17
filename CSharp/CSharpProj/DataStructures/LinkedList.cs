@@ -1,5 +1,7 @@
 using DataStructures.Nodes;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 
 namespace DataStructures;
@@ -11,9 +13,9 @@ public class LinkedList<T> : IEnumerable<T>
 {
     private Knot<T>? Head = null; // The Top/Root of the List
     private Knot<T>? Tail = null; // The last item
-
     private int Length = 0; // The count of items in the list
-    public bool IsEmpty { get { return _IsEmpty(); } } // return true is the list is empty
+    
+    public bool IsEmpty { get { return Length == 0; } } // return true is the list is empty
     public LinkedList() { Clear(); } // class constructor
 
     /// <summary>
@@ -26,28 +28,47 @@ public class LinkedList<T> : IEnumerable<T>
         Length = 0;
     }
 
-
     #region Inserters
+
 
     /// <summary>
     /// Add a T value at the end of the list
     /// </summary>
     /// <param name="value"> value to be added </param>
-    public void Add(T value)
+    public void Add(T value) => AddTail(value);
+
+    /// <summary>
+    /// Add a T value at the end of the list
+    /// </summary>
+    /// <param name="value"> value to be added </param>
+    public void AddTail(T value)
     {
-        Knot<T> knotToAdd = new(value);
+        Knot<T> toAdd = new(value);
 
         if (IsEmpty)
         {
-            Head = knotToAdd;
-            Tail = knotToAdd;
-            Length++;
+            StartList(toAdd);
             return;
         }
 
-        Tail!.NextKnot = knotToAdd;
-        Tail = knotToAdd;
-        Length++;
+        Link(Tail, toAdd);
+    }
+
+    /// <summary>
+    /// Add a T value at the Head of the list
+    /// </summary>
+    /// <param name="value"></param>
+    public void AddHead(T value)
+    {
+        Knot<T> toAdd = new(value);
+
+        if (IsEmpty)
+        {
+            StartList(toAdd);
+            return;
+        }
+
+        Link(null, toAdd);
     }
 
     /// <summary>
@@ -56,31 +77,23 @@ public class LinkedList<T> : IEnumerable<T>
     /// <param name="value"> value to be added </param>
     /// <param name="index"> the index </param>
     /// <exception cref="IndexOutOfRangeException"> if index goes outside the list </exception>
-    public void Insert(T value, int index)
+    public void InsertAt(T value, int index)
     {
-        if (index < 0)
-            index = Length + index;
+        NormalizeIndex(ref index);
 
-        if (index < 0 || Length <= index)
+        if (index < 0 || index > Length)
             throw new IndexOutOfRangeException();
 
         if (index == 0)
-        {
-            Head = new Knot<T>(value, Head);
-            Length++;
-            return;
-        }
+            { AddHead(value); return; }
+        if (index == Length)
+            { AddTail(value); return; }
 
-        var prev = Head;
-        var current = Head!.NextKnot;
+        var toAdd = new Knot<T>(value);
 
-        for (int i = 1; i < index; i++)
-        {
-            prev = current;
-            current = current!.NextKnot;
-        }
-        prev!.NextKnot = new Knot<T>(value, current);
-        Length++;
+        var prev = GetPreviousTo(index);
+
+        Link(prev, toAdd);
     }
     #endregion
 
@@ -96,10 +109,7 @@ public class LinkedList<T> : IEnumerable<T>
     /// </summary>
     /// <param name="value"> value to remove </param>
     /// <returns> return true if an item was removed </returns>
-    public bool Remove(T value)
-    {
-        return Remove(item => EqualityComparer<T>.Default.Equals(item, value));
-    }
+    public bool Remove(T value) => Remove(item => EqualityComparer<T>.Default.Equals(item, value));
 
     /// <summary>
     /// Remove the first occurrence of a value in the list that matches the condition
@@ -108,34 +118,16 @@ public class LinkedList<T> : IEnumerable<T>
     /// <returns> return true if an item was removed </returns>
     public bool Remove(Func<T, bool> condition)
     {
-
-        if (Head is null)
-            return false;
-
-        if (condition(Head.Value))
+        Knot<T>? prev = null;
+        foreach (var i in knots())
         {
-            Head = Head.NextKnot;
-            Length--;
-            return true;
-        }
-
-        var prev = Head;
-        var current = Head.NextKnot;
-
-        while (current is not null)
-        {
-            if (condition(current.Value))
+            if (condition(i.Value))
             {
-                prev.NextKnot = current.NextKnot;
-                Length--;
+                Unlink(prev); //Unlink(prev, i)
                 return true;
             }
-
-            prev = current;
-            current = current.NextKnot;
-
+            prev = i;
         }
-
         return false;
     }
 
@@ -144,10 +136,7 @@ public class LinkedList<T> : IEnumerable<T>
     /// </summary>
     /// <param name="value"> value to remove </param>
     /// <returns> return true if at least one item was removed </returns>
-    public bool RemoveAll(T value)
-    {
-        return RemoveAll(item => EqualityComparer<T>.Default.Equals(item, value));
-    }
+    public bool RemoveAll(T value) => RemoveAll(item => EqualityComparer<T>.Default.Equals(item, value));
 
     /// <summary>
     /// Remove all occurrences of values in the list that match the condition
@@ -156,93 +145,48 @@ public class LinkedList<T> : IEnumerable<T>
     /// <returns> return true if at least one item was removed </returns>
     public bool RemoveAll(Func<T, bool> condition)
     {
-        bool removed = false;
-
-        if (IsEmpty)
-            return false;
-
-        while (Head is not null && condition(Head.Value))
+        bool constRemoved = false;
+        bool Removed = false;
+        Knot<T>? prev = null;
+        foreach (var i in knots())
         {
-            Head = Head.NextKnot;
-            Length--;
-            removed = true;
-        }
-
-        if (IsEmpty)
-            return removed;
-
-        Knot<T> prev = Head!;
-        Knot<T>? current = Head!.NextKnot;
-
-        while (current is not null)
-        {
-            if (condition(current.Value))
+            if (condition(i.Value))
             {
-                prev.NextKnot = current.NextKnot;
-                current = current.NextKnot;
-                Length--;
-                removed = true;
+                Unlink(prev); // Unlink(prev, i)
+                Removed = true;
+                constRemoved = true;
             }
+            if (Removed)
+                Removed = false;
             else
-            {
-                prev = current;
-                current = current.NextKnot;
-            }
+                prev = i;
         }
-
-        return removed;
+        return constRemoved;
     }
 
     /// <summary>
     /// Remove and return a value at the chosen index
     /// </summary>
-    /// <param name="index"> the index to remove the value from
-    /// if null, removes the last item </param>
-    /// <returns> the removed value </returns>
-    /// <exception cref="InvalidOperationException"> if the list is empty </exception>
-    /// <exception cref="IndexOutOfRangeException"> if index goes outside the list </exception>
-    public T Pop(int? index = null)
+    public T Pop(int index)
     {
-        if (IsEmpty)
-            throw new InvalidOperationException("Can't Pop an Empty List");
-        if (index is null)
-            return Pop(-1);
-        if (index < 0)
-            index = Length + index;
-        if (index < 0 || Length <= index)
-            throw new IndexOutOfRangeException();
+        NormalizeIndex(ref index);
+        CheckIndex(index);
 
-        T popped;
+        var pointer = GetPreviousTo(index);
 
-        if (index == 0)
-        {
-            popped = Head!.Value;
-            Head = Head.NextKnot;
-            Length--;
-            return popped;
-        }
+        T popped = pointer is null ? Head!.Value : pointer.NextKnot!.Value;
 
-        Knot<T> prev = Head!;
-        Knot<T>? current = Head!.NextKnot;
+        Unlink(pointer);
 
-        // "current" may be bugged
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-
-        for (int i = 1; i < index; i++)
-        {
-            prev = current;
-            current = current.NextKnot;
-        }
-
-        popped = current.Value;
-        prev.NextKnot = current.NextKnot;
-        Length--;
-
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         return popped;
     }
+
+    /// <summary>
+    /// Removes and returns last value in list
+    /// </summary>
+    /// <returns></returns>
+    public T Pop() => Pop(-1);
+
     #endregion
 
 
@@ -255,15 +199,19 @@ public class LinkedList<T> : IEnumerable<T>
     /// <summary>
     /// returns the Length of the list
     /// </summary>
-    public int Count()
-    {
-        return Length;
-    }
+    public int Count() => Length;
 
     /// <summary>
-    /// Count items that match the provided predicate.
+    /// Counts how many of the same value there is in the list
     /// </summary>
-    /// <param name="condition"> Predicate to match items against </param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public int Count(T value) => Count(item => EqualityComparer<T>.Default.Equals(item, value));
+
+    /// <summary>
+    /// Counts items that match the provided condition
+    /// </summary>
+    /// <param name="condition"> condition to match items against </param>
     public int Count(Func<T, bool> condition)
     {
         int count = 0;
@@ -275,44 +223,136 @@ public class LinkedList<T> : IEnumerable<T>
         return count;
     }
 
-    private bool _IsEmpty()
-    {
-        return Head is null;
-    }
-
     /// <summary>
     /// Get the index of the first occurrence of a value in the list
     /// </summary>
     /// <param name="value"> value to look for </param>
-    /// <returns> returns the index of the item </returns>
-    public int GetIndex(T value)
-    {
-        return GetIndex(item => EqualityComparer<T>.Default.Equals(item, value));
-    }
+    /// <returns> returns the index of the item, or null if not found </returns>
+    public int? GetIndex(T value) => GetIndex(item => EqualityComparer<T>.Default.Equals(item, value));
 
     /// <summary>
     /// Get the index of the first occurrence of a value in the list that matches the condition
     /// </summary>
-    /// <param name="condition"> condition to check </param>
-    /// <returns> returns the index of the item, or -1 if not found </returns>
-    public int GetIndex(Func<T, bool> condition)
+    /// <param name="condition"> condition to check for </param>
+    /// <returns> returns the index of the item, or null if not found </returns>
+    public int? GetIndex(Func<T, bool> condition)
     {
         var current = Head;
-        var count = 0;
-        while (current is not null)
+        for (int index = 0; current is not null; index++)
         {
             if (condition(current.Value))
-            {
-                return count;
-            }
+                return index;
             else
-            {
                 current = current.NextKnot;
-                count++;
-            }
         }
-        return -1;
+        return null;
     }
+    #endregion
+
+
+
+
+
+
+    #region Helpers
+
+    /// <summary>
+    /// Enumerable for every knot in list.
+    /// </summary>
+    private IEnumerable<Knot<T>> knots()
+    {
+        var current = Head;
+        while (current is not null)
+        {
+            var next = current.NextKnot;
+            yield return current;
+            current = next;
+        }
+    }
+
+    /// <summary>
+    /// Unlinks the target Knot from the list. <br/> 
+    /// Needs the knot that points to a non null target.<br/>
+    /// if pointer is null, unlinks the head
+    /// </summary>
+    private void Unlink(Knot<T>? previousToTarget)
+    {
+        if (previousToTarget is not null && previousToTarget.NextKnot is null)
+            throw new InvalidOperationException("target can't be null");
+        if (IsEmpty)
+            throw new InvalidOperationException("Can't Unlink an empty list");
+
+        if (previousToTarget is not null)
+            previousToTarget.NextKnot = previousToTarget.NextKnot!.NextKnot;
+        else
+            Head = Head!.NextKnot;
+        Length--;
+    }
+
+    /// <summary>
+    /// Links a Knot after the target Knot. <br/>
+    /// If target is null, links at the start of the list.
+    /// </summary>
+    private void Link(Knot<T>? previous, Knot<T> toAdd)
+    {
+        if (previous is not null)
+        {
+            toAdd.NextKnot = previous.NextKnot;
+            previous.NextKnot = toAdd;
+        }
+        else
+        {
+            toAdd.NextKnot = Head;
+            Head = toAdd;
+        }
+        Length++;
+    }
+
+    private void StartList(Knot<T> toAdd)
+    {
+            Head = toAdd;
+            Tail = toAdd;
+            Length++;
+            return;
+    }
+
+    private Knot<T> GetKnotAt(int index)
+    {
+        NormalizeIndex(ref index);
+        CheckIndex(index);
+
+        var current = Head;
+        for (var i = 0; i < index; i++)
+        { current = current!.NextKnot; }
+        return current!;
+    }
+
+    private Knot<T>? GetPreviousTo(int index)
+    {
+        NormalizeIndex(ref index);
+        CheckIndex(index);
+
+        Knot<T>? prev = null;
+        var current = Head;
+        for (var i = 0; i < index; i++)
+        {
+            prev = current;
+            current = current!.NextKnot;
+        }
+        return prev;
+    }
+
+    private int NormalizeIndex(ref int index)
+    {
+        return index < 0 ? Length + index : index;
+    }
+
+    private void CheckIndex(int index)
+    {
+        if (index < 0 || index >= Length)
+            throw new IndexOutOfRangeException();
+    }
+
     #endregion
 
 
@@ -331,32 +371,20 @@ public class LinkedList<T> : IEnumerable<T>
     {
         get
         {
-            if (index < 0)
-                index = Length + index;
+            NormalizeIndex(ref index);
+            CheckIndex(index);
 
-            if (index < 0 || index >= Length || IsEmpty)
-                throw new IndexOutOfRangeException();
-
-            Knot<T> pointer = Head!;
-
-            for (int i = 0; i < index; i++)
-                pointer = pointer.NextKnot!;
+            var pointer = GetKnotAt(index);
 
             return pointer.Value;
 
         }
         set
         {
-            if (index < 0)
-                index = Length + index;
+            NormalizeIndex(ref index);
+            CheckIndex(index);
 
-            if (index < 0 || index >= Length || IsEmpty)
-                throw new IndexOutOfRangeException();
-
-            Knot<T> pointer = Head!;
-
-            for (int i = 0; i < index; i++)
-                pointer = pointer.NextKnot!;
+            var pointer = GetKnotAt(index);
 
             pointer.Value = value;
         }
@@ -381,13 +409,17 @@ public class LinkedList<T> : IEnumerable<T>
     /// </summary>
     public override string ToString()
     {
-        string _base = "[";
-        foreach (T i in this)
+        var sb = new StringBuilder();
+        sb.Append('[');
+        bool first = true;
+        foreach (T item in this)
         {
-            _base += i?.ToString();
-            _base += ", ";
+            if (!first) sb.Append(", ");
+            sb.Append(item is null ? "null" : item.ToString());
+            first = false;
         }
-        return _base += "]";
+        sb.Append(']');
+        return sb.ToString();
     }
     #endregion
 }

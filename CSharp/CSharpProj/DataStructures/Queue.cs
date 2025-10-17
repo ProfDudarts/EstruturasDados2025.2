@@ -206,14 +206,17 @@ public class Queue<T> : IEnumerable<T>
     /// </summary>
     public override string ToString()
     {
-        string str = "[";
-        foreach (T i in this)
+        var sb = new StringBuilder();
+        sb.Append('[');
+        bool first = true;
+        foreach (T item in this)
         {
-            str += i?.ToString();
-            str += ", ";
+            if (!first) sb.Append(", ");
+            sb.Append(item is null ? "null" : item.ToString());
+            first = false;
         }
-        str += "]";
-        return str;
+        sb.Append(']');
+        return sb.ToString();
     }
     #endregion
 }

@@ -288,9 +288,9 @@ public class DiLinkedList<T> : IEnumerable<T>
     private DiKnot<T> GetNodeAt(int index)
     {
         if ((Length / 2) > ((index < 0) ? Length + index : index))
-        { return GetNodeAt_Head(index); }
+            return GetNodeAt_Head(index);
         else
-        { return GetNodeAt_Tail(index); }
+            return GetNodeAt_Tail(index);
 
     }
 

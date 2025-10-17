@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using DataStructures;
+﻿using DataStructures;
 
 public class Program
 {
@@ -9,5 +8,4 @@ public class Program
 
         
     }
-
 }
