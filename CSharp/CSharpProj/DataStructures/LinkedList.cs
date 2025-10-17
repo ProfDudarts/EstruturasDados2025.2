@@ -9,8 +9,8 @@ namespace DataStructures;
 /// </summary>
 public class LinkedList<T> : IEnumerable<T>
 {
-    private Knot<T>? TopKnot = null; // The Top/Root of the List
-    private Knot<T>? LastKnot = null; // The last item
+    private Knot<T>? Head = null; // The Top/Root of the List
+    private Knot<T>? Tail = null; // The last item
 
     private int Length = 0; // The count of items in the list
     public bool IsEmpty { get { return _IsEmpty(); } } // return true is the list is empty
@@ -21,8 +21,8 @@ public class LinkedList<T> : IEnumerable<T>
     /// </summary>
     public void Clear()
     {
-        TopKnot = null;
-        LastKnot = null;
+        Head = null;
+        Tail = null;
         Length = 0;
     }
 
@@ -39,14 +39,14 @@ public class LinkedList<T> : IEnumerable<T>
 
         if (IsEmpty)
         {
-            TopKnot = knotToAdd;
-            LastKnot = knotToAdd;
+            Head = knotToAdd;
+            Tail = knotToAdd;
             Length++;
             return;
         }
 
-        LastKnot!.NextKnot = knotToAdd;
-        LastKnot = knotToAdd;
+        Tail!.NextKnot = knotToAdd;
+        Tail = knotToAdd;
         Length++;
     }
 
@@ -66,15 +66,15 @@ public class LinkedList<T> : IEnumerable<T>
 
         if (index == 0)
         {
-            TopKnot = new Knot<T>(value, TopKnot);
+            Head = new Knot<T>(value, Head);
             Length++;
             return;
         }
 
-        var prev = TopKnot;
-        var current = TopKnot!.NextKnot;
+        var prev = Head;
+        var current = Head!.NextKnot;
 
-        for (int i = 0; i < index; i++)
+        for (int i = 1; i < index; i++)
         {
             prev = current;
             current = current!.NextKnot;
@@ -109,18 +109,18 @@ public class LinkedList<T> : IEnumerable<T>
     public bool Remove(Func<T, bool> condition)
     {
 
-        if (TopKnot is null)
+        if (Head is null)
             return false;
 
-        if (condition(TopKnot.Value))
+        if (condition(Head.Value))
         {
-            TopKnot = TopKnot.NextKnot;
+            Head = Head.NextKnot;
             Length--;
             return true;
         }
 
-        var prev = TopKnot;
-        var current = TopKnot.NextKnot;
+        var prev = Head;
+        var current = Head.NextKnot;
 
         while (current is not null)
         {
@@ -161,9 +161,9 @@ public class LinkedList<T> : IEnumerable<T>
         if (IsEmpty)
             return false;
 
-        while (TopKnot is not null && condition(TopKnot.Value))
+        while (Head is not null && condition(Head.Value))
         {
-            TopKnot = TopKnot.NextKnot;
+            Head = Head.NextKnot;
             Length--;
             removed = true;
         }
@@ -171,8 +171,8 @@ public class LinkedList<T> : IEnumerable<T>
         if (IsEmpty)
             return removed;
 
-        Knot<T> prev = TopKnot!;
-        Knot<T>? current = TopKnot!.NextKnot;
+        Knot<T> prev = Head!;
+        Knot<T>? current = Head!.NextKnot;
 
         while (current is not null)
         {
@@ -216,14 +216,14 @@ public class LinkedList<T> : IEnumerable<T>
 
         if (index == 0)
         {
-            popped = TopKnot!.Value;
-            TopKnot = TopKnot.NextKnot;
+            popped = Head!.Value;
+            Head = Head.NextKnot;
             Length--;
             return popped;
         }
 
-        Knot<T> prev = TopKnot!;
-        Knot<T>? current = TopKnot!.NextKnot;
+        Knot<T> prev = Head!;
+        Knot<T>? current = Head!.NextKnot;
 
         // "current" may be bugged
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
@@ -277,7 +277,7 @@ public class LinkedList<T> : IEnumerable<T>
 
     private bool _IsEmpty()
     {
-        return TopKnot is null;
+        return Head is null;
     }
 
     /// <summary>
@@ -297,7 +297,7 @@ public class LinkedList<T> : IEnumerable<T>
     /// <returns> returns the index of the item, or -1 if not found </returns>
     public int GetIndex(Func<T, bool> condition)
     {
-        var current = TopKnot;
+        var current = Head;
         var count = 0;
         while (current is not null)
         {
@@ -337,7 +337,7 @@ public class LinkedList<T> : IEnumerable<T>
             if (index < 0 || index >= Length || IsEmpty)
                 throw new IndexOutOfRangeException();
 
-            Knot<T> pointer = TopKnot!;
+            Knot<T> pointer = Head!;
 
             for (int i = 0; i < index; i++)
                 pointer = pointer.NextKnot!;
@@ -353,7 +353,7 @@ public class LinkedList<T> : IEnumerable<T>
             if (index < 0 || index >= Length || IsEmpty)
                 throw new IndexOutOfRangeException();
 
-            Knot<T> pointer = TopKnot!;
+            Knot<T> pointer = Head!;
 
             for (int i = 0; i < index; i++)
                 pointer = pointer.NextKnot!;
@@ -367,7 +367,7 @@ public class LinkedList<T> : IEnumerable<T>
     /// </summary>
     public IEnumerator<T> GetEnumerator()
     {
-        var knot = TopKnot;
+        var knot = Head;
         while (knot is not null)
         {
             yield return knot.Value;
