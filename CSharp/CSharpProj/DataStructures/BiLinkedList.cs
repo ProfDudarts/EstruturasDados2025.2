@@ -7,7 +7,7 @@ namespace DataStructures;
 /// <summary>
 /// A simple doubly-linked list implementation.
 /// </summary>
-public class DiLinkedList<T> : IEnumerable<T>
+public class BiLinkedList<T> : IEnumerable<T>
 {
     private DiKnot<T>? Head = null; // The Top/Root of the List
     private DiKnot<T>? Tail = null; // The last item
@@ -16,7 +16,7 @@ public class DiLinkedList<T> : IEnumerable<T>
 
     public bool IsEmpty { get { return _IsEmpty(); } } // return true is the list is empty
 
-    public DiLinkedList() { Clear(); } // class constructor
+    public BiLinkedList() { Clear(); } // class constructor
 
     /// <summary>
     /// Clears the list
@@ -32,7 +32,7 @@ public class DiLinkedList<T> : IEnumerable<T>
     #region Inserters
 
     /// <summary>
-    /// Add a T value at the end of the list
+    /// Add a T value at the end of the list <br/>
     /// This is an alias for AddEnd(T value).
     /// </summary>
     /// <param name="value"> value to be added </param>
@@ -211,6 +211,13 @@ public class DiLinkedList<T> : IEnumerable<T>
     }
 
     /// <summary>
+    /// Counts how many of a value are in the list
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public int Count(T value) => Count(item => EqualityComparer<T>.Default.Equals(item, value));
+
+    /// <summary>
     /// Count items that match the provided predicate.
     /// </summary>
     /// <param name="condition"> Predicate to match items against </param>
@@ -356,8 +363,9 @@ public class DiLinkedList<T> : IEnumerable<T>
         var current = Head;
         while (current is not null)
         {
+            var next = current.NextKnot;
             yield return current;
-            current = current.NextKnot;
+            current = next;
         }
     }
 
@@ -369,8 +377,9 @@ public class DiLinkedList<T> : IEnumerable<T>
         var current = Tail;
         while (current is not null)
         {
+            var next = current.PreviousKnot;
             yield return current;
-            current = current.PreviousKnot;
+            current = next;
         }
     }
 
@@ -448,11 +457,12 @@ public class DiLinkedList<T> : IEnumerable<T>
     /// </summary>
     public IEnumerator<T> GetEnumerator()
     {
-        var knot = Head;
-        while (knot is not null)
+        var current = Head;
+        while (current is not null)
         {
-            yield return knot.Value;
-            knot = knot.NextKnot;
+            var next = current.NextKnot;
+            yield return current.Value;
+            current = next;
         }
     }
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
@@ -460,13 +470,14 @@ public class DiLinkedList<T> : IEnumerable<T>
     /// <summary>
     /// gives enumerator functions to the class but from the back
     /// </summary> 
-    public IEnumerator<T> ReadTail()
+    public IEnumerable<T> ReadTail()
     {
-        var knot = Tail;
-        while (knot is not null)
+        var current = Tail;
+        while (current is not null)
         {
-            yield return knot.Value;
-            knot = knot.PreviousKnot;
+            var prev = current.PreviousKnot;
+            yield return current.Value;
+            current = prev;
         }
     }
 

@@ -77,7 +77,7 @@ public class BinaryTree<T> : IEnumerable<T>
 
         while (nodeList.Count() > 0)
         {
-            node = nodeList.Pop()!;
+            node = nodeList.Dequeue()!;
 
             if (node.Left is null)
             {
@@ -86,7 +86,7 @@ public class BinaryTree<T> : IEnumerable<T>
             }
             else
             {
-                nodeList.Add(node.Left);
+                nodeList.Enqueue(node.Left);
             }
 
             if (node.Right is null)
@@ -96,7 +96,7 @@ public class BinaryTree<T> : IEnumerable<T>
             }
             else
             {
-                nodeList.Add(node.Right);
+                nodeList.Enqueue(node.Right);
             }
             Count++;
 
@@ -115,16 +115,16 @@ public class BinaryTree<T> : IEnumerable<T>
 
         while (nodeList.Count() > 0)
         {
-            node = nodeList.Pop()!;
+            node = nodeList.Dequeue()!;
             yield return node.Value!;
 
             if (node.Left is not null)
             {
-                nodeList.Add(node.Left);
+                nodeList.Enqueue(node.Left);
             }
             if (node.Right is not null)
             {
-                nodeList.Add(node.Right);
+                nodeList.Enqueue(node.Right);
             }
         }
     }

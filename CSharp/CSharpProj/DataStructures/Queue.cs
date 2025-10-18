@@ -32,19 +32,25 @@ public class Queue<T> : IEnumerable<T>
     /// Enqueue a new value at the tail of the queue.
     /// </summary>
     /// <param name="value">Value to add to the queue</param>
-    public void Add(T value)
+    public void Add(T value) => Enqueue(value);
+
+    /// <summary>
+    /// Enqueue a new value at the tail of the queue.
+    /// </summary>
+    /// <param name="value">Value to add to the queue</param>
+    public void Enqueue(T value)
     {
-        Knot<T> knotToAdd = new(value);
+        Knot<T> ToAdd = new(value);
 
         if (IsEmpty)
         {
-            TopKnot = knotToAdd;
-            LastKnot = knotToAdd;
+            TopKnot = ToAdd;
+            LastKnot = ToAdd;
         }
         else
         {
-            LastKnot!.NextKnot = knotToAdd;
-            LastKnot = knotToAdd;
+            LastKnot!.NextKnot = ToAdd;
+            LastKnot = ToAdd;
         }
 
         _count += 1;
@@ -55,7 +61,14 @@ public class Queue<T> : IEnumerable<T>
     /// Throws InvalidOperationException if queue is empty.
     /// </summary>
     /// <returns> Dequeued value </returns>
-    public T Pop()
+    public T Pop() => Dequeue();
+
+    /// <summary>
+    /// Dequeue and return the value at the front of the queue.
+    /// Throws InvalidOperationException if queue is empty.
+    /// </summary>
+    /// <returns> Dequeued value </returns>
+    public T Dequeue()
     {
         if (IsEmpty)
         { throw new InvalidOperationException("Can't Remove from Empty Queue"); }
@@ -65,22 +78,31 @@ public class Queue<T> : IEnumerable<T>
         TopKnot = TopKnot.NextKnot;
         _count -= 1;
 
+        if (TopKnot is null)
+        {
+            LastKnot = null;
+        }
+
         return value;
     }
     #endregion
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     #region Getters
 
     /// <summary>
     /// Return the number of items currently in the queue.
     /// </summary>
-    public int Count()
-    { return _count; }
+    public int Count() => _count;
+
+    /// <summary>
+    /// Counts how many of a value are in the queue
+    /// </summary>
+    public int Count(T value) => Count(item => EqualityComparer<T>.Default.Equals(item, value));
 
     /// <summary>
     /// Count items that match the provided predicate.
@@ -156,10 +178,10 @@ public class Queue<T> : IEnumerable<T>
     }
 
     /// <summary>
-    /// Return the zero-based index of the first item matching the predicate.
-    /// Returns -1 if not found.
+    /// Return the index of the first item matching the predicate.
+    /// Returns null if not found.
     /// </summary>
-    public int GetIndex(Func<T, bool> condition)
+    public int? GetIndex(Func<T, bool> condition)
     {
         int count = 0;
         foreach (T item in this)
@@ -167,14 +189,14 @@ public class Queue<T> : IEnumerable<T>
             if (condition(item)) { return count; }
             count++;
         }
-        return -1;
+        return null;
     }
 
     /// <summary>
     /// Return the zero-based index of the first item equal to the provided value.
-    /// Return -1 if not found
+    /// Return null if not found
     /// </summary>
-    public int GetIndex(T value)
+    public int? GetIndex(T value)
     {
         return GetIndex(item => EqualityComparer<T>.Default.Equals(item, value));
     }
@@ -185,7 +207,7 @@ public class Queue<T> : IEnumerable<T>
     
     
     
-    #region util
+    #region Utils
 
     /// <summary>
     /// Give Enumerator functions to the class

@@ -24,6 +24,8 @@ public class Stack<T> : IEnumerable<T>
         TopKnot = null;
     }
 
+    #region Operations
+
     /// <summary>
     /// Pushes the value<T> onto the top of the stack
     /// </summary>
@@ -41,7 +43,7 @@ public class Stack<T> : IEnumerable<T>
     public T Pop()
     {
         if (IsEmpty)
-        { throw new IndexOutOfRangeException("Can't Remove from Empty Stack"); }
+        { throw new InvalidOperationException("Can't Remove from Empty Stack"); }
 
         T value = TopKnot!.Value;
 
@@ -51,12 +53,25 @@ public class Stack<T> : IEnumerable<T>
         return value;
     }
 
+    #endregion
+    
+
+
+
+
+
+    #region Getters
+
     /// <summary>
     /// Returns the number of elements in the stack
     /// </summary>
-    public int Count()
-    { return _count; }
+    public int Count() => _count;
 
+    /// <summary>
+    /// return how may of a value are in the list
+    /// </summary>
+    public int Count(T value) => Count(item => EqualityComparer<T>.Default.Equals(item, value));
+    
     /// <summary>
     /// Returns the number of elements in the stack that satisfy the given condition
     /// </summary>
@@ -153,6 +168,15 @@ public class Stack<T> : IEnumerable<T>
         return GetIndex(x => EqualityComparer<T>.Default.Equals(x, value));
     }
 
+    #endregion
+
+
+
+
+
+
+    #region Utils
+
     /// <summary>
     /// Gives the class Enumerator functions
     /// </summary>
@@ -184,4 +208,6 @@ public class Stack<T> : IEnumerable<T>
         sb.Append(']');
         return sb.ToString();
     }
+
+    #endregion
 }
