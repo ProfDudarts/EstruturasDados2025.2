@@ -294,11 +294,10 @@ public class BiLinkedList<T> : IEnumerable<T>
     /// <summary>
     /// Get the node at a specific index, traverses from Head
     /// </summary>
-    /// <param name="index"> the index can not be out of range </param>
+    /// <param name="index"> the index is not normalized and can not be out of range </param>
     private DiKnot<T> GetNodeAt_Head(int index)
     {
-        if (index < 0 || index >= Length)
-            throw new IndexOutOfRangeException();
+        CheckIndex(index);
 
         var current = Head!;
         for (int i = 0; i < index; i++)
@@ -309,11 +308,10 @@ public class BiLinkedList<T> : IEnumerable<T>
     /// <summary>
     /// Get the node at a specific index, traverses from Tail
     /// </summary>
-    /// <param name="index"> the index can not be out of range </param>
+    /// <param name="index"> the index is not normalized and can not be out of range </param>
     private DiKnot<T> GetNodeAt_Tail(int index)
     {
-        if (index < 0 || index >= Length)
-            throw new IndexOutOfRangeException();
+        CheckIndex(index);
 
         var current = Tail!;
         for (int i = Length - 1 ; i > index; i--)
@@ -417,7 +415,7 @@ public class BiLinkedList<T> : IEnumerable<T>
     /// <exception cref="InvalidOperationException"> Can't start if list is not empty </exception>
     private void StartList(DiKnot<T> toAdd)
     {
-        if (!IsEmpty) throw new InvalidOperationException("Can't Start an non empty list");
+        if (!IsEmpty) throw new InvalidOperationException("Can't Start a non empty list");
 
         Tail = toAdd;
         Head = toAdd;

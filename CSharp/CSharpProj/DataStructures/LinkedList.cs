@@ -81,13 +81,12 @@ public class LinkedList<T> : IEnumerable<T>
     {
         NormalizeIndex(ref index);
 
-        if (index < 0 || index > Length)
-            throw new IndexOutOfRangeException();
-
         if (index == 0)
-            { AddHead(value); return; }
+        { AddHead(value); return; }
         if (index == Length)
-            { AddTail(value); return; }
+        { AddTail(value); return; }
+
+        CheckIndex(index);
 
         var toAdd = new Knot<T>(value);
 
@@ -409,17 +408,17 @@ public class LinkedList<T> : IEnumerable<T>
     /// </summary>
     public override string ToString()
     {
-        var sb = new StringBuilder();
-        sb.Append('[');
+        var str = new StringBuilder();
+        str.Append('[');
         bool first = true;
         foreach (T item in this)
         {
-            if (!first) sb.Append(", ");
-            sb.Append(item is null ? "null" : item.ToString());
+            if (!first) str.Append(", ");
+            str.Append(item is null ? "null" : item.ToString());
             first = false;
         }
-        sb.Append(']');
-        return sb.ToString();
+        str.Append(']');
+        return str.ToString();
     }
     #endregion
 }
