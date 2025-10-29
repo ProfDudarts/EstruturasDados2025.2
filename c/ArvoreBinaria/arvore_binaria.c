@@ -1,38 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "arvore_binaria.h"
 
-struct No {
-    int valor;
-    struct No* esquerda;
-    struct No* direita;
-};
-
-struct No* criarNo(int valor) {
-    struct No* novoNo = (struct No*)malloc(sizeof(struct No));
+NoArvore* criar_no(int valor) {
+    NoArvore* novoNo = (NoArvore*)malloc(sizeof(NoArvore));
     novoNo->valor = valor;
     novoNo->esquerda = NULL;
     novoNo->direita = NULL;
     return novoNo;
 }
 
-void inserir_iterativo(struct No** raiz, int valor) {
-    struct No* novoNo = criarNo(valor);
+void inserir_iterativo_helper(NoArvore** raiz, int valor) {
+    NoArvore* novoNo = criar_no(valor);
 
     if (*raiz == NULL) {
         *raiz = novoNo;
         return;
     }
 
-    struct No* atual = *raiz;
-    struct No* pai = NULL;
+    NoArvore* atual = *raiz;
+    NoArvore* pai = NULL;
 
     while (atual != NULL) {
         pai = atual;
         if (valor < atual->valor) {
             atual = atual->esquerda;
-        } else if (valor > atual->valor) {
+        }
+        else if (valor > atual->valor) {
             atual = atual->direita;
-        } else {
+        }
+        else {
             free(novoNo);
             return;
         }
@@ -40,40 +37,71 @@ void inserir_iterativo(struct No** raiz, int valor) {
 
     if (valor < pai->valor) {
         pai->esquerda = novoNo;
-    } else {
+    }
+    else {
         pai->direita = novoNo;
     }
 }
 
-void emOrdem(struct No* raiz) {
+void em_ordem_helper(NoArvore* raiz) {
     if (raiz != NULL) {
-        emOrdem(raiz->esquerda);
+        em_ordem_helper(raiz->esquerda);
         printf("%d ", raiz->valor);
-        emOrdem(raiz->direita);
+        em_ordem_helper(raiz->direita);
+    }
+}
+void deletar_nos_recursivo(NoArvore* raiz) {
+    if (raiz != NULL) {
+        deletar_nos_recursivo(raiz->esquerda);
+        deletar_nos_recursivo(raiz->direita);
+        free(raiz);
     }
 }
 
-void liberarArvore(struct No* raiz) {
-    if (raiz != NULL) {
-        liberarArvore(raiz->esquerda);
-        liberarArvore(raiz->direita);
-        free(raiz);
-    }
+ArvoreBinaria* criar_arvore() {
+    ArvoreBinaria* arvore = (ArvoreBinaria*)malloc(sizeof(ArvoreBinaria));
+    if (arvore == NULL) {
+        fprintf(stderr, "Erro: Falha na alocação de memória para a árvore\n");
+        exit(1);
+    }
+    arvore->raiz = NULL;
+    return arvore;
 }
-int main() {
-    struct No* raiz = NULL;
 
-    printf("Inserindo valores com a função ITERATIVA...\n");
-    inserir_iterativo(&raiz, 50);
-    inserir_iterativo(&raiz, 30);
-    inserir_iterativo(&raiz, 70);
-    inserir_iterativo(&raiz, 20);
-    inserir_iterativo(&raiz, 40);
+void deletar_arvore(ArvoreBinaria* arvore) {
+    if (arvore == NULL) return;
+    deletar_nos_recursivo(arvore->raiz);
+    free(arvore);
+}
 
-    printf("Valores da árvore em ordem:\n");
-    emOrdem(raiz);
+void inserir_valor(ArvoreBinaria* arvore, int valor) {
+    if (arvore == NULL) return;
+    inserir_iterativo_helper(&(arvore->raiz), valor);
+}
+
+void imprimir_em_ordem(ArvoreBinaria* arvore) {
+    if (arvore == NULL || arvore->raiz == NULL) {
+        printf("Árvore vazia.\n");
+        return;
+    }
+    em_ordem_helper(arvore->raiz);
     printf("\n");
-    
-    liberarArvore(raiz);
-    return 0;
+}
+
+int buscar_valor(ArvoreBinaria* arvore, int valor) {
+    if (arvore == NULL) return 0;
+
+    NoArvore* atual = arvore->raiz;
+    while (atual != NULL) {
+        if (valor == atual->valor) {
+            return 1;
+        }
+        else if (valor < atual->valor) {
+            atual = atual->esquerda;
+        }
+        else {
+            atual = atual->direita;
+        }
+    }
+    return 0;
 }
