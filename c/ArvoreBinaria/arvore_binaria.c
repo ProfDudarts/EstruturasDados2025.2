@@ -1,4 +1,3 @@
-// pessoa 1 
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,7 +14,7 @@ struct No* criarNo(int valor) {
     novoNo->direita = NULL;
     return novoNo;
 }
-// pessoa 2 
+
 void inserir_iterativo(struct No** raiz, int valor) {
     struct No* novoNo = criarNo(valor);
 
