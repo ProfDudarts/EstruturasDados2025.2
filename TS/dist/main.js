@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fila_js_1 = require("./Models/fila.js");
 const pilha_js_1 = require("./Models/pilha.js");
+const ListaEncadeada_1 = require("./Models/ListaEncadeada");
+const ListaDuplamenteEncadeada_1 = require("./Models/ListaDuplamenteEncadeada");
 const minhaFila = new fila_js_1.Fila();
 console.log('A fila está vazia?', minhaFila.vazio());
 console.log('Inserindo os elementos 10, 20 e 30...');
@@ -28,4 +30,24 @@ console.log(minhaPilha.listar());
 console.log('Apagando o topo:', minhaPilha.apagar());
 console.log('Novo topo:', minhaPilha.topo_valor());
 console.log('A pilha está vazia?', minhaPilha.empty());
+function main() {
+    console.log("===== Lista Encadeada =====");
+    const lista = new ListaEncadeada_1.ListaEncadeada();
+    lista.adicionar(10);
+    lista.adicionar(20);
+    lista.adicionarInicio(5);
+    lista.imprimir();
+    lista.remover(20);
+    lista.imprimir();
+    console.log("\n===== Lista Duplamente Encadeada =====");
+    const listaDupla = new ListaDuplamenteEncadeada_1.ListaDuplamenteEncadeada();
+    listaDupla.adicionar("A");
+    listaDupla.adicionar("B");
+    listaDupla.adicionarInicio("Início");
+    listaDupla.imprimirFrente();
+    listaDupla.imprimirTras();
+    listaDupla.remover("B");
+    listaDupla.imprimirFrente();
+}
+main();
 //# sourceMappingURL=main.js.map
