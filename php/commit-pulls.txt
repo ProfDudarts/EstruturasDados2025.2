@@ -22,3 +22,4 @@ Version:
         -[ • Gustavo   ] 00.1.0.0.0.0.0.014    - (Arvore Binaria was created)
         -[ • Philipe   ] 00.1.0.0.0.0.0.015    - (General readme rework and fix path)
         -[ • Philipe   ] 00.1.0.0.0.0.0.015.1  - (PHP readme updated)
+        -[ • Luís      ] 00.1.0.0.0.0.0.016    - (AVLTree added completly)
