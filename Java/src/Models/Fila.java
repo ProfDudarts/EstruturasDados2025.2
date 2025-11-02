@@ -1,3 +1,4 @@
+package Models;
 
 public class Fila<T> {
     private java.util.LinkedList<T> elementos = new java.util.LinkedList<>();
@@ -27,5 +28,11 @@ public class Fila<T> {
     // retorna o tamanho
     public int size() {
         return elementos.size();
+    }
+
+    public static void info() {
+        System.out.println("Fila → Primeiro que entra, primeiro que sai (FIFO).");
+        System.out.println("Vantagem: ideal para filas de espera.");
+        System.out.println("Limitação: acesso apenas ao primeiro elemento.\n");
     }
 }
