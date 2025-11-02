@@ -21,7 +21,8 @@ Mais do que desenvolver um sistema completo, o foco é que os alunos:
     - O líder deve ser o aprovador destes **Pull Requests**
 - A linguagem será definida por **sorteio** entre as seguintes opções:
   - [C](c/)
-  - [C++](Grupos/Grupo_2/)
+  - [C++](C++/)
+  - [CSharp](CSharp/)
   - [Java](Java/)
   - [TypeScript](TS/)
   - [PHP](php/)

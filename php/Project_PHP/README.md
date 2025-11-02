@@ -1,3 +1,34 @@
+# Árvore Binária (VNL) - PHP
+
+> Projeto desenvolvido em **PHP 8.2** com **Laravel 10** para implementação e visualização de uma estrutura de dados do tipo **árvore binária (VNL)**.
+
+---
+
+##  Descrição
+
+Este projeto tem como objetivo demonstrar o funcionamento de uma **árvore binária VNL (Visual Node Link)** utilizando **PHP**  
+A aplicação permite criar, manipular e visualizar nós de uma árvore binária de forma dinâmica e interativa, auxiliando em estudos e implementações práticas de estruturas de dados.
+
+---
+
+##  Tecnologias Utilizadas
+
+* **PHP 8.2**
+* **Laravel 10**
+* **Composer**
+
+---
+
+##  Uso
+
+O sistema permite:
+- Inserir novos nós na árvore;
+- Visualizar a estrutura completa de forma hierárquica (VNL);
+- Remover ou buscar nós específicos;
+- Demonstrar operações típicas de árvores binárias (inserção, busca, remoção, travessias etc.).
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -29,33 +60,6 @@ You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
 ## Security Vulnerabilities
 
