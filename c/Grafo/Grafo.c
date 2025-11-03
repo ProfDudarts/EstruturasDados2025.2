@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "grafo.h"
+#include "Grafo.h"
 
 #include "../Fila/fila.h"
 #include "../Pilha/pilha.h"
@@ -60,6 +60,11 @@ void imprimir_grafo(Grafo* grafo) {
 
 
 void BFS(Grafo* grafo, int vertice_inicio) {
+    if (grafo == NULL || vertice_inicio < 0 || vertice_inicio >= grafo->num_vertices) {
+        fprintf(stderr, "Erro: vértice inicial inválido para BFS\n");
+        return;
+    }
+
     printf("Iniciando BFS a partir do vértice %d:\n", vertice_inicio);
 
     int* visitados = (int*)calloc(grafo->num_vertices, sizeof(int));
@@ -93,6 +98,11 @@ void BFS(Grafo* grafo, int vertice_inicio) {
 }
 
 void DFS(Grafo* grafo, int vertice_inicio) {
+    if (grafo == NULL || vertice_inicio < 0 || vertice_inicio >= grafo->num_vertices) {
+        fprintf(stderr, "Erro: vértice inicial inválido para DFS\n");
+        return;
+    }
+
     printf("Iniciando DFS a partir do vértice %d:\n", vertice_inicio);
 
     int* visitados = (int*)calloc(grafo->num_vertices, sizeof(int));
