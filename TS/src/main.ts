@@ -249,3 +249,12 @@ function main() {
 
 // Inicia todos os testes
 main();
+
+// Testes
+
+const arvore = new ArvoreBinaria<number>();
+
+const dados = [15, 3, 17, 10, 84, 19, 6, 22, 9];
+
+console.log("HeapSort Máximo:", arvore.heapSortMax([...dados]));
+console.log("HeapSort Mínimo:", arvore.heapSortMin([...dados]));
