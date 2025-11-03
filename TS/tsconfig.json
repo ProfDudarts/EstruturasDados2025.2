@@ -19,9 +19,11 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-
+    
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
+
+    "moduleResolution": "node",
 
     // Style Options
     // "noImplicitReturns": true,
@@ -35,12 +37,14 @@
     "strict": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": false,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": false
+    "forceConsistentCasingInFileNames": false,
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    
   }
 }

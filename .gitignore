@@ -55,3 +55,9 @@ Makefile
 /dist/
 /nbdist/
 .nb-gradle/
+
+
+# Java
+######
+
+/out

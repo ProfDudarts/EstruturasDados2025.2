@@ -1,7 +1,6 @@
 package Models;
 
 public class ArvoreBinaria {
-
     private class No {
         int valor;
         No esquerda;
@@ -35,6 +34,7 @@ public class ArvoreBinaria {
 
     public void emOrdem() {
         emOrdemRecursivo(raiz);
+        System.out.println();
     }
 
     private void emOrdemRecursivo(No atual) {
@@ -59,5 +59,11 @@ public class ArvoreBinaria {
         return valor < atual.valor
                 ? buscarRecursivo(atual.esquerda, valor)
                 : buscarRecursivo(atual.direita, valor);
+    }
+
+    public static void info() {
+        System.out.println("Árvore Binária de Busca → organiza dados hierarquicamente.");
+        System.out.println("Vantagem: busca rápida em dados ordenados.");
+        System.out.println("Limitação: pode ficar desbalanceada, perdendo eficiência.\n");
     }
 }
