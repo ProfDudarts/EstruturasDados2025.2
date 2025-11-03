@@ -51,7 +51,7 @@ function main() {
   const lista = new ListaEncadeada<number>()
   lista.adicionar(10)
   lista.adicionar(20)
-  lista.adicionarInicio(5)
+  lista.adicionar_inicio(5)
   lista.imprimir()
   lista.remover(20)
   lista.imprimir()
@@ -68,3 +68,77 @@ function main() {
 }
 
 main()
+
+
+function exemploUsoListaEncadeada() {
+    console.log("=====================================================================");
+    console.log("                DEMONSTRAÇÃO DA LISTA ENCADEDADA DE NÚMEROS");
+    console.log("=====================================================================");
+
+    // Criando uma lista de números
+    const listaNumeros = new ListaEncadeada<number>();
+
+    // Teste de Adição
+    listaNumeros.adicionar(10);
+    listaNumeros.adicionar(40);
+    listaNumeros.adicionar_inicio(5);
+    listaNumeros.imprimir(); 
+
+    // Teste de Inserção na Posição
+    listaNumeros.inserir_na_posicao(20, 2); // Deve ir após o 10
+    listaNumeros.inserir_na_posicao(50, 4); // Deve ir no final
+    listaNumeros.imprimir();
+
+    // Teste de Remoção
+    listaNumeros.remover(5); // Remove 5 (cabeça)
+    listaNumeros.imprimir(); 
+    listaNumeros.remover_na_posicao(2); // Remove 40
+    listaNumeros.imprimir();
+    listaNumeros.remover(99); // Não encontrado
+
+    console.log("\n--- ORDENAÇÃO DEMONSTRAÇÃO ---\n");
+
+    const listaParaOrdenar = new ListaEncadeada<number>();
+    listaParaOrdenar.adicionar(50);
+    listaParaOrdenar.adicionar(20);
+    listaParaOrdenar.adicionar(40);
+    listaParaOrdenar.adicionar(10);
+    listaParaOrdenar.adicionar(30);
+    listaParaOrdenar.adicionar(60);
+    listaParaOrdenar.imprimir(); 
+    
+    // Testando Merge Sort (In-Place)
+    console.log("\n>>> Testando Merge Sort (Otimizado para Listas Encadeadas)");
+    listaParaOrdenar.ordenar_por_merge_sort();
+    listaParaOrdenar.imprimir(); 
+    
+    // Testando Heap Sort (Auxiliar)
+    console.log("\n>>> Reiniciando lista para Heap Sort");
+    const listaHeap = new ListaEncadeada<number>();
+    listaHeap.adicionar(5); listaHeap.adicionar(2); listaHeap.adicionar(8); listaHeap.adicionar(1);
+    listaHeap.imprimir();
+    listaHeap.ordenar_por_heap_sort_auxiliar();
+    listaHeap.imprimir();
+
+
+    console.log("\n=====================================================================");
+    console.log("               DEMONSTRAÇÃO DA LISTA ENCADEDADA DE STRINGS");
+    console.log("=====================================================================");
+    
+    // Testando lista com tipo String (demonstração de genéricos)
+    const listaStrings = new ListaEncadeada<string>();
+    listaStrings.adicionar("Banana");
+    listaStrings.adicionar_inicio("Maçã");
+    listaStrings.adicionar("Pêra");
+    listaStrings.adicionar("Abacaxi");
+    listaStrings.imprimir();
+
+    // Ordenação com strings (Selection Sort)
+    console.log("\n>>> Testando Selection Sort com Strings");
+    listaStrings.ordenar_por_selection_sort_in_place();
+    listaStrings.imprimir(); 
+}
+
+// Inicia a demonstração
+exemploUsoListaEncadeada();
+
