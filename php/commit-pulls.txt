@@ -24,3 +24,4 @@ Version:
         -[ • Philipe   ] 00.1.0.0.0.0.0.015.1  - (PHP readme updated)
         -[ • Luís      ] 00.1.0.0.0.0.0.016    - (AVLTree added completly)
         -[ • Jenifer   ] 00.1.0.0.0.0.0.017    - (Queue unit test implementation)
+        -[ • Jenifer   ] 00.1.0.0.0.0.0.018    - (Linked list implementation)
