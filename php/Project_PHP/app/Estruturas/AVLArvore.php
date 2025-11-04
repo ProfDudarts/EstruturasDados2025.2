@@ -1,6 +1,6 @@
 <?php
 declare (strict_types=1);
-namespace Estruturas;
+namespace App\Estruturas;
 
 // =========================================================================
 // DEFINIÇÕES DE CLASSES/CONSTANTES AUSENTES (PLACEHOLDERS)
@@ -17,7 +17,7 @@ if (!defined('RBPPAVL_FIND_EXACT_MATCH')) {
 
 // --- 2. Classe de Nó (NoArvoreAVL) ---
 // PLACEHOLDER: Deve ser o arquivo real NoArvoreAVL.php
-if (!class_exists('Estruturas\NoArvoreAVL')) {
+if (!class_exists('App\Estruturas\NoArvoreAVL')) {
     class NoArvoreAVL {
         public $data;
         public $parent;
@@ -38,7 +38,7 @@ if (!class_exists('Estruturas\NoArvoreAVL')) {
 
 // --- 3. Classe Base (RbppavlCommon) ---
 // PLACEHOLDER: Deve ser o arquivo real RbppavlCommon.php
-if (!class_exists('Estruturas\RbppavlCommon')) {
+if (!class_exists('App\Estruturas\RbppavlCommon')) {
     abstract class RbppavlCommon {
         protected $memoryLimit = null;
         protected $memoryThreshold = null;
@@ -55,17 +55,8 @@ if (!class_exists('Estruturas\RbppavlCommon')) {
 }
 // =========================================================================
 
-/**
- * PHP versão 5
- *
- * @category Estruturas
- * @package  Rbppavl
- * @author   mondrake <mondrake@mondrake.org>
- * @license  http://www.gnu.org/licenses/gpl.html GNU GPLv3
- */
-
 // CORREÇÃO ESTRUTURAL: Estende RbppavlCommon
-class ArvoreAVL extends RbppavlCommon 
+class AVLArvore extends RbppavlCommon 
 {
     /**
      * Ponteiro para o nó raiz da árvore.
@@ -324,6 +315,7 @@ class ArvoreAVL extends RbppavlCommon
                     $nodeType .= ' ' . $this->txt('internal');
                 }
                 $r = $p->link[1];
+                /** @var \App\Estruturas\NoArvoreAVL $r */
                 if ($r->link[0] == null) {
                     // debug diagnostic - r without left subtree
                     if ($this->debugMode) {
@@ -347,6 +339,7 @@ class ArvoreAVL extends RbppavlCommon
                         $nodeType .= ' ' . $this->txt('r-left', array('%node' => $this->cbc->dump($r->data),));
                     }
                     $s = $r->link[0];
+                    /** @var \App\Estruturas\NoArvoreAVL $s */
                     while ($s->link[0] != null) {
                         $s = $s->link[0];
                     }
@@ -361,7 +354,9 @@ class ArvoreAVL extends RbppavlCommon
                     if ($s->link[1]) {
                         $s->link[1]->parent = $s;
                     }
-                    $s->link[0]->parent = $s;
+                    if ($s->link[0]) {
+                        $s->link[0]->parent = $s;
+                    }
                     $s->parent = $p->parent;
                     if ($r->link[0]) {
                         $r->link[0]->parent = $r;
@@ -483,7 +478,7 @@ class ArvoreAVL extends RbppavlCommon
                 return null;
             }
         }
-        $n = new NoArvoreAVL($this, $data, $q);
+        $n = new NoArvoreAVL($data, $q);
 
         $this->_count++;
         if ($q) {
@@ -824,5 +819,35 @@ class ArvoreAVL extends RbppavlCommon
         } else {
             return (isset($this->_statistics[$stat]) ? $this->_statistics[$stat] : null);
         }
+    }
+
+    /**
+     * Converte a árvore em uma estrutura recursiva para visualização.
+     *
+     * @return array|null
+     */
+    public function toArray(): ?array
+    {
+        if (!$this->root) {
+            return null;
+        }
+
+        return $this->nodeToArray($this->root);
+    }
+
+    /**
+     * Converte um nó em array recursivo.
+     */
+    private function nodeToArray($node): ?array
+    {
+        if (!$node) {
+            return null;
+        }
+
+        return [
+            'value' => $node->data,
+            'left'  => $this->nodeToArray($node->link[0]),
+            'right' => $this->nodeToArray($node->link[1]),
+        ];
     }
 }

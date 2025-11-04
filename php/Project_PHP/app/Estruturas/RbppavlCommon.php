@@ -1,6 +1,7 @@
 <?php
+namespace App\Estruturas;
 
-if (!class_exists('ArvoreAVL')) {
+if (!class_exists('App\Estruturas\ArvoreAVL')) {
     class ArvoreAVL {
         public $root = null;
         public $balanceFactor = 1;
@@ -317,10 +318,9 @@ abstract class RbppavlCommon extends ArvoreAVL
      */
     protected function checkData($data, $method)
     {
-        if (empty($data) or !is_object($data)) {
-            // incorrect data input
-            $this->setStatus(107, array('%method' => $method,));
-            return false;
+        if ($data === null || ($data === '' && !is_numeric($data)) || (!is_object($data) && !is_scalar($data))) {
+        $this->setStatus(107, array('%method' => $method,));
+        return false;
         } else {
             // debug log method called
             if ($this->debugMode) {
