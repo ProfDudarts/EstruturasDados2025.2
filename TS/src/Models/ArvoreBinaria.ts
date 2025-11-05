@@ -132,4 +132,79 @@ public removerRecursivo(no: NoArvore<T> | null, elemento: T): {
       this.inOrderRecursivo(no.direita, elementos);
     }
   }
+
+    // ---------- HEAPSORT DE MÁXIMO ----------
+  public heapSortMax(array: T[]): T[] {
+    const n = array.length;
+
+    // Constrói o heap máximo
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      this.heapifyMax(array, n, i);
+    }
+
+    // Extrai elementos um por um do heap
+    for (let i = n - 1; i > 0; i--) {
+      [array[0], array[i]] = [array[i], array[0]]; // troca
+      this.heapifyMax(array, i, 0); // corrige o heap
+    }
+
+    return array;
+  }
+
+  private heapifyMax(array: T[], n: number, i: number): void {
+    let maior = i;
+    const esquerda = 2 * i + 1;
+    const direita = 2 * i + 2;
+
+    if (esquerda < n && array[esquerda] > array[maior]) {
+      maior = esquerda;
+    }
+
+    if (direita < n && array[direita] > array[maior]) {
+      maior = direita;
+    }
+
+    if (maior !== i) {
+      [array[i], array[maior]] = [array[maior], array[i]];
+      this.heapifyMax(array, n, maior);
+    }
+  }
+
+  // ---------- HEAPSORT DE MÍNIMO ----------
+  public heapSortMin(array: T[]): T[] {
+    const n = array.length;
+
+    // Constrói o heap mínimo
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      this.heapifyMin(array, n, i);
+    }
+
+    // Extrai elementos um por um do heap
+    for (let i = n - 1; i > 0; i--) {
+      [array[0], array[i]] = [array[i], array[0]]; // troca
+      this.heapifyMin(array, i, 0); // corrige o heap
+    }
+
+    return array;
+  }
+
+  private heapifyMin(array: T[], n: number, i: number): void {
+    let menor = i;
+    const esquerda = 2 * i + 1;
+    const direita = 2 * i + 2;
+
+    if (esquerda < n && array[esquerda] < array[menor]) {
+      menor = esquerda;
+    }
+
+    if (direita < n && array[direita] < array[menor]) {
+      menor = direita;
+    }
+
+    if (menor !== i) {
+      [array[i], array[menor]] = [array[menor], array[i]];
+      this.heapifyMin(array, n, menor);
+    }
+  }
+
 }
